@@ -1,0 +1,24 @@
+[package]
+name = "tgbotapi"
+version = "0.1.0"
+authors = ["Syfaro <syfaro@huefox.com>"]
+edition = "2018"
+description = "A library for working with the Telegram Bot API"
+repository = "https://github.com/Syfaro/tgbotapi-rs"
+readme = "README.md"
+license = "MIT"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+reqwest = { version = "0.10", features = ["json"] }
+
+failure = "0.1"
+
+tracing = "0.1"
+tracing-futures = "0.2"
+
+[dev-dependencies]
+tokio = { version = "0.2", features = ["macros"] }
+httptest = "0.12"
+pretty_env_logger = "0.4"
