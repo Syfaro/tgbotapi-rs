@@ -276,10 +276,25 @@ pub struct PhotoSize {
     pub file_size: Option<i32>,
 }
 
+/// A callback query is data from an inline keyboard.
+///
+/// Exactly one of `data` or `game_short_name` will be set.
 #[derive(Clone, Debug, Deserialize)]
 pub struct CallbackQuery {
+    /// Unique ID of this callback query.
     pub id: String,
+    /// Sender of the callback query.
+    pub from: User,
+    /// Message that originated the query. May be omitted if too old.
+    pub message: Option<Box<Message>>,
+    /// Identifier of the message that sent via the bot in inline mode.
+    pub inline_message_id: Option<String>,
+    /// Global identifier for the chat, useful for game high scores.
+    pub chat_instance: Option<String>,
+    /// Data associated with the callback button.
     pub data: Option<String>,
+    /// Short name of the game to be returned.
+    pub game_short_name: Option<String>,
 }
 
 #[derive(Clone, Debug, Deserialize)]
