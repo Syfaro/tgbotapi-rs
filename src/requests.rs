@@ -760,6 +760,20 @@ impl TelegramRequest for EditMessageReplyMarkup {
     }
 }
 
+#[derive(Default, Debug, Serialize)]
+pub struct DeleteMessage {
+    pub chat_id: ChatID,
+    pub message_id: i32,
+}
+
+impl TelegramRequest for DeleteMessage {
+    type Response = bool;
+
+    fn endpoint(&self) -> &str {
+        "deleteMessage"
+    }
+}
+
 #[derive(Default, Debug, Serialize, Clone)]
 pub struct GetChatMember {
     pub chat_id: ChatID,

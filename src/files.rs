@@ -89,7 +89,7 @@ where
         if file.needs_upload() {
             let new_file = match file {
                 FileType::Bytes(file_name, _) => {
-                    FileType::Attach(format!("attach://{}", file_name).into())
+                    FileType::Attach(format!("attach://{}", file_name))
                 }
                 _ => unimplemented!(),
             };
