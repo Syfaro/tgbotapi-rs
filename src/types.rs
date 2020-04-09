@@ -111,6 +111,8 @@ pub enum MessageEntityType {
     PhoneNumber,
     Bold,
     Italic,
+    Underline,
+    Strikethrough,
     Code,
     Pre,
     TextLink,
