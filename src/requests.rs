@@ -509,9 +509,23 @@ pub struct SendVideo {
     #[serde(skip_serializing_if = "FileType::needs_upload")]
     pub video: FileType,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub duration: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub width: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub height: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub parse_mode: Option<ParseMode>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub supports_streaming: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_notification: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message_id: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reply_markup: Option<ReplyMarkup>,
 }
 
 impl TelegramRequest for SendVideo {
@@ -526,7 +540,7 @@ impl TelegramRequest for SendVideo {
         // be uploaded, we specify the field name and get the file. This unwrap
         // is safe because `needs_upload` only returns true when it exists.
         if self.video.needs_upload() {
-            Some(vec![("photo".into(), self.video.file().unwrap())])
+            Some(vec![("video".into(), self.video.file().unwrap())])
         } else {
             None
         }
