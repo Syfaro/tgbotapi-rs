@@ -243,7 +243,7 @@ pub enum InlineQueryType {
     Video(InlineQueryResultVideo),
 }
 
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Debug, Clone, Default)]
 pub struct InlineQueryResultArticle {
     pub title: String,
     #[serde(flatten)]
@@ -252,15 +252,25 @@ pub struct InlineQueryResultArticle {
     pub description: Option<String>,
 }
 
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Debug, Clone, Default)]
 pub struct InlineQueryResultPhoto {
     pub photo_url: String,
     pub thumb_url: String,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub photo_width: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub photo_height: Option<u32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub title: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub description: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parse_mode: Option<ParseMode>,
 }
 
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Debug, Clone, Default)]
 pub struct InlineQueryResultGIF {
     pub gif_url: String,
     pub thumb_url: String,
@@ -268,7 +278,7 @@ pub struct InlineQueryResultGIF {
     pub caption: Option<String>,
 }
 
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Debug, Clone, Default)]
 pub struct InlineQueryResultVideo {
     pub video_url: String,
     pub mime_type: String,
@@ -304,6 +314,7 @@ impl InlineQueryResult {
                 photo_url,
                 thumb_url,
                 caption: None,
+                ..Default::default()
             }),
         }
     }
@@ -349,7 +360,13 @@ pub enum InputMessageType {
     Text(InputMessageText),
 }
 
-#[derive(Serialize, Debug, Clone)]
+impl Default for InputMessageType {
+    fn default() -> Self {
+        InputMessageType::Text(Default::default())
+    }
+}
+
+#[derive(Serialize, Debug, Clone, Default)]
 pub struct InputMessageText {
     pub message_text: String,
     #[serde(skip_serializing_if = "Option::is_none")]
