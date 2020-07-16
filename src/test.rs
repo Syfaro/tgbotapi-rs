@@ -91,7 +91,7 @@ async fn test_download_file() {
 }
 
 #[tokio::test]
-async fn test_webhook() -> failure::Fallible<()> {
+async fn test_webhook() {
     let _ = pretty_env_logger::try_init();
 
     let endpoint = "http://example.com";
@@ -119,18 +119,16 @@ async fn test_webhook() -> failure::Fallible<()> {
     let set_webhook = SetWebhook {
         url: endpoint.into(),
     };
-    let resp = telegram.make_request(&set_webhook).await?;
+    let resp = telegram.make_request(&set_webhook).await.unwrap();
     assert_eq!(resp, true);
 
     let delete_webhook = DeleteWebhook;
-    let resp = telegram.make_request(&delete_webhook).await?;
+    let resp = telegram.make_request(&delete_webhook).await.unwrap();
     assert_eq!(resp, true);
-
-    Ok(())
 }
 
 #[tokio::test]
-async fn test_get_me() -> failure::Fallible<()> {
+async fn test_get_me() {
     let user = User {
         id: 123,
         first_name: "Test".into(),
@@ -160,9 +158,7 @@ async fn test_get_me() -> failure::Fallible<()> {
 
     let telegram = Telegram::new_with_endpoint(TOKEN.into(), server.url("").to_string());
     let get_me = GetMe;
-    let resp = telegram.make_request(&get_me).await?;
+    let resp = telegram.make_request(&get_me).await.unwrap();
 
     assert_eq!(resp, user, "user information must be the same");
-
-    Ok(())
 }

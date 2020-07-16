@@ -1,38 +1,21 @@
 use serde::Deserialize;
+use thiserror::Error;
 
 /// An error generated somewhere within the library.
-#[derive(Fail, Debug)]
+#[derive(Error, Debug)]
 pub enum Error {
     /// An error that originated from Telegram. May be caused by bad request
     /// parameters, rate limiting, trying to send to a user that blocked the
     /// bot, a group that migrated to a supergroup, or others.
-    #[fail(display = "telegram error: {}", _0)]
-    Telegram(#[fail(cause)] TelegramError),
+    #[error("telegram error: {0}")]
+    Telegram(#[from] TelegramError),
     /// An error caused by invalid JSON. Most likely to be caused by the Bot API
     /// having issues and returning HTTP responses.
-    #[fail(display = "json parsing error: {}", _0)]
-    JSON(#[fail(cause)] serde_json::Error),
+    #[error("json parsing error: {0}")]
+    JSON(#[from] serde_json::Error),
     /// An error caused by a network error.
-    #[fail(display = "http error: {}", _0)]
-    Request(#[fail(cause)] reqwest::Error),
-}
-
-impl From<reqwest::Error> for Error {
-    fn from(item: reqwest::Error) -> Error {
-        Error::Request(item)
-    }
-}
-
-impl From<serde_json::Error> for Error {
-    fn from(item: serde_json::Error) -> Error {
-        Error::JSON(item)
-    }
-}
-
-impl From<TelegramError> for Error {
-    fn from(item: TelegramError) -> Error {
-        Error::Telegram(item)
-    }
+    #[error("http error: {0}")]
+    Request(#[from] reqwest::Error),
 }
 
 /// Additional information returned by Telegram with an error.

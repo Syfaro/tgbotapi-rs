@@ -4,9 +4,6 @@ pub use types::*;
 
 use tracing::{debug, warn};
 
-#[macro_use]
-extern crate failure;
-
 mod error;
 mod files;
 mod types;
