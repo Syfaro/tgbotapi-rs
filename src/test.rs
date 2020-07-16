@@ -1,6 +1,6 @@
 use super::{requests::*, *};
 
-use httptest::{mappers::*, responders::*, Expectation, Server};
+use httptest::{matchers::*, responders::*, Expectation, Server};
 use serde_json::json;
 
 static TOKEN: &str = "abc123";

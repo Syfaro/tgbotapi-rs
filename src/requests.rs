@@ -444,15 +444,18 @@ pub struct SendMessage {
     /// The mode used to parse the provided text.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parse_mode: Option<ParseMode>,
+    /// If Telegram should not generate a web page preview.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_web_page_preview: Option<bool>,
+    /// If the message should be sent silently (notification but no sound).
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_notification: Option<bool>,
     /// The ID of the [Message] this Message is in reply to.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message_id: Option<i32>,
     /// The [ReplyMarkup], if desired.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<ReplyMarkup>,
-    /// If Telegram should not generate a web page preview.
-    #[serde(skip_serializing_if = "Option::is_none")]
-    pub disable_web_page_preview: Option<bool>,
 }
 
 impl TelegramRequest for SendMessage {
