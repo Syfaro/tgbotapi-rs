@@ -85,7 +85,7 @@ impl Telegram {
         let url = format!("{}bot{}/{}", self.api_endpoint, self.api_key, endpoint);
         let values = request.values()?;
 
-        debug!("Making request");
+        debug!(method = endpoint, "making request");
 
         let resp: types::Response<T::Response> = if let Some(files) = request.files() {
             // If our request has a file that needs to be uploaded, use
@@ -103,7 +103,8 @@ impl Telegram {
                         if let Ok(value) = serde_json::to_string(value) {
                             form.text(name.to_owned(), value)
                         } else {
-                            warn!("Skipping field {} due to invalid data: {:?}", name, value);
+                            let field: &str = name;
+                            warn!(method = endpoint, field, data = ?value, "skipping field due to invalid data");
                             form
                         }
                     });
@@ -112,9 +113,13 @@ impl Telegram {
                 .into_iter()
                 .fold(form, |form, (name, part)| form.part(name, part));
 
-            let resp = self.client.post(&url).multipart(form).send().await?;
-
-            resp.json().await?
+            self.client
+                .post(&url)
+                .multipart(form)
+                .send()
+                .await?
+                .json()
+                .await?
         } else {
             // No files to upload, use a JSON body in a POST request to the
             // requested endpoint.
@@ -128,7 +133,7 @@ impl Telegram {
                 .await?
         };
 
-        debug!("Got response with data {:?}", resp);
+        debug!(method = endpoint, ?resp, "got response");
 
         resp.into()
     }
