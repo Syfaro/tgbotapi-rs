@@ -809,6 +809,19 @@ impl TelegramRequest for DeleteMessage {
 }
 
 #[derive(Default, Debug, Serialize, Clone)]
+pub struct GetChat {
+    pub chat_id: ChatID,
+}
+
+impl TelegramRequest for GetChat {
+    type Response = Chat;
+
+    fn endpoint(&self) -> &str {
+        "getChat"
+    }
+}
+
+#[derive(Default, Debug, Serialize, Clone)]
 pub struct GetChatMember {
     pub chat_id: ChatID,
     pub user_id: i32,
