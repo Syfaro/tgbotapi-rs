@@ -5,7 +5,7 @@ use crate::types::*;
 use crate::{RequestFiles, TelegramRequest};
 
 /// ChatID represents a possible type of value for requests.
-#[derive(Serialize, Debug, Clone)]
+#[derive(Serialize, Debug, Clone, PartialEq)]
 #[serde(untagged)]
 pub enum ChatID {
     /// A chat's numeric ID.
