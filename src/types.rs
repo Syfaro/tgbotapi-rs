@@ -84,6 +84,29 @@ pub struct Chat {
     pub id: i64,
     #[serde(rename = "type")]
     pub chat_type: ChatType,
+    pub title: Option<String>,
+    pub username: Option<String>,
+    pub first_name: Option<String>,
+    pub last_name: Option<String>,
+    pub description: Option<String>,
+    pub invite_link: Option<String>,
+    pub pinned_message: Option<Box<Message>>,
+    pub permissions: Option<ChatPermissions>,
+    pub slow_mode_delay: Option<i32>,
+    pub sticker_set_name: Option<String>,
+    pub can_set_sticker_set: Option<bool>,
+}
+
+#[derive(Clone, Debug, Deserialize, Default)]
+pub struct ChatPermissions {
+    pub can_send_messages: Option<bool>,
+    pub can_send_media_messages: Option<bool>,
+    pub can_send_polls: Option<bool>,
+    pub can_send_other_messages: Option<bool>,
+    pub can_add_web_page_previews: Option<bool>,
+    pub can_change_info: Option<bool>,
+    pub can_invite_users: Option<bool>,
+    pub can_pin_messages: Option<bool>,
 }
 
 /// An entity within a message's text or caption.
