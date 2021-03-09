@@ -824,7 +824,7 @@ impl TelegramRequest for GetChat {
 #[derive(Default, Debug, Serialize, Clone)]
 pub struct GetChatMember {
     pub chat_id: ChatID,
-    pub user_id: i32,
+    pub user_id: i64,
 }
 
 impl TelegramRequest for GetChatMember {

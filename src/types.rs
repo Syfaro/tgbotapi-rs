@@ -50,7 +50,7 @@ pub struct Update {
 
 #[derive(Clone, Debug, Deserialize, Default, PartialEq)]
 pub struct User {
-    pub id: i32,
+    pub id: i64,
     pub is_bot: bool,
     pub first_name: String,
     pub last_name: Option<String>,
@@ -549,7 +549,7 @@ pub struct Contact {
     pub phone_number: String,
     pub first_name: String,
     pub last_name: Option<String>,
-    pub user_id: Option<i32>,
+    pub user_id: Option<i64>,
     pub vcard: Option<String>,
 }
 
