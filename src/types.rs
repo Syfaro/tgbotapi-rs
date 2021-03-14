@@ -427,7 +427,7 @@ pub struct ChatMember {
 #[derive(Deserialize, Debug, Clone, Default)]
 pub struct ChatMemberUpdated {
     pub chat: Chat,
-    pub user: User,
+    pub from: User,
     pub date: i32,
     pub old_chat_member: ChatMember,
     pub new_chat_member: ChatMember,
