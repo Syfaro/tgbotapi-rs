@@ -94,7 +94,7 @@ impl Telegram {
             // original object.
 
             let mut form_values = serde_json::Map::new();
-            form_values = values.as_object().unwrap_or_else(|| &form_values).clone();
+            form_values = values.as_object().unwrap_or(&form_values).clone();
 
             let form =
                 form_values

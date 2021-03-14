@@ -94,7 +94,7 @@ pub enum ReplyMarkup {
 #[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "PascalCase")]
 pub enum ParseMode {
-    HTML,
+    Html,
     Markdown,
     MarkdownV2,
 }
@@ -239,7 +239,7 @@ pub struct InlineQueryResult {
 pub enum InlineQueryType {
     Article(InlineQueryResultArticle),
     Photo(InlineQueryResultPhoto),
-    GIF(InlineQueryResultGIF),
+    Gif(InlineQueryResultGIF),
     Video(InlineQueryResultVideo),
 }
 
@@ -324,7 +324,7 @@ impl InlineQueryResult {
             result_type: "gif".into(),
             id,
             reply_markup: None,
-            content: InlineQueryType::GIF(InlineQueryResultGIF {
+            content: InlineQueryType::Gif(InlineQueryResultGIF {
                 gif_url,
                 thumb_url,
                 caption: None,

@@ -12,7 +12,7 @@ pub enum Error {
     /// An error caused by invalid JSON. Most likely to be caused by the Bot API
     /// having issues and returning HTTP responses.
     #[error("json parsing error: {0}")]
-    JSON(#[from] serde_json::Error),
+    Json(#[from] serde_json::Error),
     /// An error caused by a network error.
     #[error("http error: {0}")]
     Request(#[from] reqwest::Error),

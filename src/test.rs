@@ -7,7 +7,7 @@ static TOKEN: &str = "abc123";
 
 #[test]
 fn test_file_type() {
-    let url = FileType::URL("test".into());
+    let url = FileType::Url("test".into());
     assert_eq!(url.needs_upload(), false, "url does not need upload");
     assert!(url.file().is_none(), "url does not have file");
 
@@ -35,8 +35,8 @@ fn test_input_media() {
         media: FileType::FileID("test1".into()),
         ..Default::default()
     });
-    let new_photo = photo.update_media(FileType::URL("test2".into()));
-    assert_eq!(new_photo.get_file(), &FileType::URL("test2".into()));
+    let new_photo = photo.update_media(FileType::Url("test2".into()));
+    assert_eq!(new_photo.get_file(), &FileType::Url("test2".into()));
 
     let input_media_photo = match new_photo {
         InputMedia::Photo(photo) => photo,
@@ -53,8 +53,8 @@ fn test_input_media() {
         media: FileType::FileID("test1".into()),
         ..Default::default()
     });
-    let new_video = video.update_media(FileType::URL("test2".into()));
-    assert_eq!(new_video.get_file(), &FileType::URL("test2".into()));
+    let new_video = video.update_media(FileType::Url("test2".into()));
+    assert_eq!(new_video.get_file(), &FileType::Url("test2".into()));
 
     let input_media_video = match new_video {
         InputMedia::Video(video) => video,

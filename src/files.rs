@@ -7,7 +7,7 @@ use crate::requests::*;
 #[serde(untagged)]
 pub enum FileType {
     /// URL contains a String with the URL to pass to Telegram.
-    URL(String),
+    Url(String),
     /// FileID is an ID about a file already on Telegram's servers.
     FileID(String),
     /// Attach is a specific type used to attach multiple files to a request.
@@ -32,7 +32,7 @@ impl Default for FileType {
 impl std::fmt::Debug for FileType {
     fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
         match self {
-            FileType::URL(url) => write!(f, "FileType URL: {}", url),
+            FileType::Url(url) => write!(f, "FileType URL: {}", url),
             FileType::FileID(file_id) => write!(f, "FileType FileID: {}", file_id),
             FileType::Attach(attach) => write!(f, "FileType Attach: {}", attach),
             FileType::Bytes(name, bytes) => {
@@ -47,10 +47,7 @@ impl FileType {
     /// Returns if this file is a type that gets uploaded to Telegram.
     /// Most types are simply passed through as strings.
     pub fn needs_upload(&self) -> bool {
-        match self {
-            FileType::Bytes(_, _) => true,
-            _ => false,
-        }
+        matches!(self, FileType::Bytes(_, _))
     }
 
     /// Get a multipart Part for the file.

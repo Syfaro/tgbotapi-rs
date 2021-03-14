@@ -14,21 +14,20 @@ pub struct Response<T> {
     pub result: Option<T>,
 }
 
-/// Allow for turning a Response into a more usable Result type.
-impl<T> Into<Result<T, TelegramError>> for Response<T> {
-    fn into(self) -> Result<T, TelegramError> {
-        match self.result {
-            Some(result) if self.ok => Ok(result),
-            _ => Err(self.error),
+impl<T> From<Response<T>> for Result<T, TelegramError> {
+    fn from(resp: Response<T>) -> Self {
+        match resp.result {
+            Some(result) if resp.ok => Ok(result),
+            _ => Err(resp.error),
         }
     }
 }
 
-impl<T> Into<Result<T, Error>> for Response<T> {
-    fn into(self) -> Result<T, Error> {
-        match self.result {
-            Some(result) if self.ok => Ok(result),
-            _ => Err(Error::Telegram(self.error)),
+impl<T> From<Response<T>> for Result<T, Error> {
+    fn from(resp: Response<T>) -> Self {
+        match resp.result {
+            Some(result) if resp.ok => Ok(result),
+            _ => Err(Error::Telegram(resp.error)),
         }
     }
 }
@@ -46,6 +45,8 @@ pub struct Update {
     pub callback_query: Option<CallbackQuery>,
     pub poll: Option<Poll>,
     pub poll_answer: Option<PollAnswer>,
+    pub my_chat_member: Option<ChatMemberUpdated>,
+    pub chat_member: Option<ChatMemberUpdated>,
 }
 
 #[derive(Clone, Debug, Deserialize, Default, PartialEq)]
@@ -129,7 +130,7 @@ pub enum MessageEntityType {
     Cashtag,
     BotCommand,
     #[serde(rename = "url")]
-    URL,
+    Url,
     Email,
     PhoneNumber,
     Bold,
@@ -367,6 +368,16 @@ pub struct InlineKeyboardMarkup {
     pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
+#[derive(Deserialize, Debug, Clone, Default)]
+pub struct ChatInviteLink {
+    pub invite_link: String,
+    pub creator: User,
+    pub is_primary: bool,
+    pub is_revoked: bool,
+    pub expire_date: Option<i32>,
+    pub member_limit: Option<u16>,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
 #[serde(rename_all = "lowercase")]
 pub enum ChatMemberStatus {
@@ -411,6 +422,16 @@ pub struct ChatMember {
     pub can_send_polls: Option<bool>,
     pub can_send_other_messages: Option<bool>,
     pub can_add_web_page_previews: Option<bool>,
+}
+
+#[derive(Deserialize, Debug, Clone, Default)]
+pub struct ChatMemberUpdated {
+    pub chat: Chat,
+    pub user: User,
+    pub date: i32,
+    pub old_chat_member: ChatMember,
+    pub new_chat_member: ChatMember,
+    pub invite_link: Option<ChatInviteLink>,
 }
 
 /// The part of the face where the mask should be placed as a part of a mask
