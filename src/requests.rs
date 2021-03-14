@@ -411,6 +411,9 @@ pub struct GetUpdates {
     /// * `shipping_query`
     /// * `pre_checkout_query`
     /// * `poll`
+    /// * `poll_answer`
+    /// * `my_chat_member`
+    /// * `chat_member`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_updates: Option<Vec<String>>,
 }
@@ -665,9 +668,11 @@ impl TelegramRequest for AnswerInlineQuery {
     }
 }
 
-#[derive(Clone, Debug, Serialize)]
+#[derive(Clone, Debug, Serialize, Default)]
 pub struct SetWebhook {
     pub url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allowed_updates: Option<Vec<String>>,
 }
 
 impl TelegramRequest for SetWebhook {

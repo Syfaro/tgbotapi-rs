@@ -118,6 +118,7 @@ async fn test_webhook() {
 
     let set_webhook = SetWebhook {
         url: endpoint.into(),
+        ..Default::default()
     };
     let resp = telegram.make_request(&set_webhook).await.unwrap();
     assert_eq!(resp, true);
