@@ -2,7 +2,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::error::*;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Serialize)]
 pub struct Response<T> {
     /// If the request was successful. If true, the result is available.
     /// If false, error contains information about what happened.
@@ -33,7 +33,7 @@ impl<T> From<Response<T>> for Result<T, Error> {
 }
 
 /// An update from Telegram. Each update contains exactly one item.
-#[derive(Clone, Debug, Deserialize, Default)]
+#[derive(Clone, Debug, Deserialize, Default, Serialize)]
 pub struct Update {
     pub update_id: i32,
     pub message: Option<Message>,
@@ -49,7 +49,7 @@ pub struct Update {
     pub chat_member: Option<ChatMemberUpdated>,
 }
 
-#[derive(Clone, Debug, Deserialize, Default, PartialEq)]
+#[derive(Clone, Debug, Deserialize, Default, PartialEq, Serialize)]
 pub struct User {
     pub id: i64,
     pub is_bot: bool,
@@ -59,7 +59,7 @@ pub struct User {
     pub language_code: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq)]
+#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ChatType {
     Private,
@@ -80,7 +80,7 @@ impl ChatType {
     }
 }
 
-#[derive(Clone, Debug, Deserialize, Default)]
+#[derive(Clone, Debug, Deserialize, Default, Serialize)]
 pub struct Chat {
     pub id: i64,
     #[serde(rename = "type")]
@@ -98,7 +98,7 @@ pub struct Chat {
     pub can_set_sticker_set: Option<bool>,
 }
 
-#[derive(Clone, Debug, Deserialize, Default)]
+#[derive(Clone, Debug, Deserialize, Default, Serialize)]
 pub struct ChatPermissions {
     pub can_send_messages: Option<bool>,
     pub can_send_media_messages: Option<bool>,
@@ -111,7 +111,7 @@ pub struct ChatPermissions {
 }
 
 /// An entity within a message's text or caption.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct MessageEntity {
     #[serde(rename = "type")]
     pub entity_type: MessageEntityType,
@@ -122,7 +122,7 @@ pub struct MessageEntity {
 }
 
 /// The type of an entity within a message's text or caption.
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
 #[serde(rename_all = "snake_case")]
 pub enum MessageEntityType {
     Mention,
@@ -144,7 +144,7 @@ pub enum MessageEntityType {
 }
 
 /// A sent message.
-#[derive(Clone, Debug, Deserialize, Default)]
+#[derive(Clone, Debug, Deserialize, Default, Serialize)]
 pub struct Message {
     /// Unique identifier for this message in this chat.
     pub message_id: i32,
@@ -247,7 +247,7 @@ pub struct Message {
     pub reply_markup: Option<InlineKeyboardMarkup>,
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, Serialize)]
 /// Command represents information obtained from the BotCommand MessageEntity.
 pub struct Command {
     /// The name of the command, eg. `/start`.
@@ -293,7 +293,7 @@ impl Message {
     }
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct PhotoSize {
     pub file_id: String,
     pub file_unique_id: String,
@@ -305,7 +305,7 @@ pub struct PhotoSize {
 /// A callback query is data from an inline keyboard.
 ///
 /// Exactly one of `data` or `game_short_name` will be set.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct CallbackQuery {
     /// Unique ID of this callback query.
     pub id: String,
@@ -323,7 +323,7 @@ pub struct CallbackQuery {
     pub game_short_name: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct InlineQuery {
     pub id: String,
     pub from: User,
@@ -331,7 +331,7 @@ pub struct InlineQuery {
     pub offset: String,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub struct ChosenInlineResult {
     pub result_id: String,
     pub from: User,
@@ -339,7 +339,7 @@ pub struct ChosenInlineResult {
     pub query: String,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, Serialize)]
 pub struct File {
     /// The ID for this file, specific to this bot.
     pub file_id: String,
@@ -368,7 +368,7 @@ pub struct InlineKeyboardMarkup {
     pub inline_keyboard: Vec<Vec<InlineKeyboardButton>>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Debug, Clone, Default, Serialize)]
 pub struct ChatInviteLink {
     pub invite_link: String,
     pub creator: User,
@@ -401,7 +401,7 @@ impl ChatMemberStatus {
     }
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Debug, Clone, Default, Serialize)]
 pub struct ChatMember {
     pub user: User,
     pub status: ChatMemberStatus,
@@ -424,7 +424,7 @@ pub struct ChatMember {
     pub can_add_web_page_previews: Option<bool>,
 }
 
-#[derive(Deserialize, Debug, Clone, Default)]
+#[derive(Deserialize, Debug, Clone, Default, Serialize)]
 pub struct ChatMemberUpdated {
     pub chat: Chat,
     pub from: User,
@@ -436,7 +436,7 @@ pub struct ChatMemberUpdated {
 
 /// The part of the face where the mask should be placed as a part of a mask
 /// position in a sticker.
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 pub enum MaskPositionPoint {
     Forehead,
     Eyes,
@@ -451,7 +451,7 @@ impl Default for MaskPositionPoint {
 }
 
 /// The position on faces where a mask should be placed.
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct MaskPosition {
     /// The part of the face where the mask belongs.
     pub point: MaskPositionPoint,
@@ -464,7 +464,7 @@ pub struct MaskPosition {
 }
 
 /// Information about a sticker.
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Sticker {
     /// Identifier for the file, which may be used to download or reuse it.
     pub file_id: String,
@@ -489,7 +489,7 @@ pub struct Sticker {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Audio {
     pub file_id: String,
     pub file_unique_id: String,
@@ -501,7 +501,7 @@ pub struct Audio {
     pub thumb: Option<PhotoSize>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Document {
     pub file_id: String,
     pub file_unique_id: String,
@@ -511,7 +511,7 @@ pub struct Document {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Animation {
     pub file_id: String,
     pub file_unique_id: String,
@@ -524,7 +524,7 @@ pub struct Animation {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Game {
     pub title: String,
     pub description: String,
@@ -534,7 +534,7 @@ pub struct Game {
     pub animation: Option<Animation>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Video {
     pub file_id: String,
     pub file_unique_id: String,
@@ -546,7 +546,7 @@ pub struct Video {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Voice {
     pub file_id: String,
     pub file_unique_id: String,
@@ -555,7 +555,7 @@ pub struct Voice {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct VideoNote {
     pub file_id: String,
     pub file_unique_id: String,
@@ -565,7 +565,7 @@ pub struct VideoNote {
     pub file_size: Option<i32>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Contact {
     pub phone_number: String,
     pub first_name: String,
@@ -574,13 +574,13 @@ pub struct Contact {
     pub vcard: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Location {
     pub longitude: f64,
     pub latitude: f64,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Venue {
     pub location: Location,
     pub title: String,
@@ -589,7 +589,7 @@ pub struct Venue {
     pub forsquare_type: Option<String>,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct Poll {
     pub id: String,
     pub question: String,
@@ -603,7 +603,7 @@ pub struct Poll {
     pub correct_option_id: Option<i32>,
 }
 
-#[derive(Clone, Debug, Deserialize)]
+#[derive(Clone, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PollType {
     Regular,
@@ -616,13 +616,13 @@ impl Default for PollType {
     }
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct PollOption {
     pub text: String,
     pub voter_count: i32,
 }
 
-#[derive(Clone, Debug, Default, Deserialize)]
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
 pub struct PollAnswer {
     pub poll_id: String,
     pub user: User,
