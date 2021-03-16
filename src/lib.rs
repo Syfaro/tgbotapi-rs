@@ -100,7 +100,9 @@ impl Telegram {
                 form_values
                     .iter()
                     .fold(reqwest::multipart::Form::new(), |form, (name, value)| {
-                        if let Ok(value) = serde_json::to_string(value) {
+                        if let Some(s) = value.as_str() {
+                            form.text(name.to_owned(), s.to_string())
+                        } else if let Ok(value) = serde_json::to_string(value) {
                             form.text(name.to_owned(), value)
                         } else {
                             let field: &str = name;

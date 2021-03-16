@@ -130,6 +130,8 @@ async fn test_webhook() {
 
 #[tokio::test]
 async fn test_get_me() {
+    let _ = pretty_env_logger::try_init();
+
     let user = User {
         id: 123,
         first_name: "Test".into(),
@@ -162,4 +164,42 @@ async fn test_get_me() {
     let resp = telegram.make_request(&get_me).await.unwrap();
 
     assert_eq!(resp, user, "user information must be the same");
+}
+
+#[tokio::test]
+async fn test_send_photo_url() {
+    let _ = pretty_env_logger::try_init();
+
+    let server = Server::run();
+    server.expect(
+        Expectation::matching(all_of![
+            request::method("POST"),
+            request::path(format!("/bot{}/sendPhoto", TOKEN)),
+            request::body(json_decoded(eq(json!({
+                "chat_id": 123,
+                "photo": "test-url",
+                "caption": "test caption",
+            })))),
+        ])
+        .respond_with(json_encoded(json!({
+            "ok": true,
+            "result": {
+                "message_id": 1,
+                "date": 0,
+                "chat": {
+                    "id": 1,
+                    "type": "private",
+                }
+            }
+        }))),
+    );
+
+    let telegram = Telegram::new_with_endpoint(TOKEN.into(), server.url("").to_string());
+    let send_photo = SendPhoto {
+        chat_id: 123.into(),
+        photo: FileType::Url("test-url".to_string()),
+        caption: Some("test caption".to_string()),
+        ..Default::default()
+    };
+    telegram.make_request(&send_photo).await.unwrap();
 }
