@@ -45,7 +45,7 @@ impl Default for ChatID {
 }
 
 /// ForceReply allows you to default users to replying to your message.
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct ForceReply {
     /// This must be set to `true` to operate correctly.
     pub force_reply: bool,
@@ -83,7 +83,7 @@ impl Default for ForceReply {
 /// * <s>ReplyKeyboardMarkup</s> // TODO
 /// * <s>ReplyKeyboardRemove</s> // TODO
 /// * [ForceReply]
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(untagged)]
 pub enum ReplyMarkup {
     InlineKeyboardMarkup(InlineKeyboardMarkup),
@@ -100,7 +100,7 @@ pub enum ParseMode {
 }
 
 /// ChatAction is the action that the bot is indicating.
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 #[serde(rename_all = "snake_case")]
 pub enum ChatAction {
     Typing,
@@ -192,7 +192,7 @@ impl Default for InputMediaVideo {
     }
 }
 
-#[derive(Debug, Serialize)]
+#[derive(Debug, Serialize, Clone)]
 #[serde(untagged)]
 pub enum InputMedia {
     Photo(InputMediaPhoto),
@@ -374,7 +374,7 @@ pub struct InputMessageText {
 }
 
 /// GetMe is a request that returns [User] information for the current bot.
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct GetMe;
 
 impl TelegramRequest for GetMe {
@@ -386,7 +386,7 @@ impl TelegramRequest for GetMe {
 }
 
 /// GetUpdates is a request that returns any available [Updates](Update).
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 pub struct GetUpdates {
     /// ID for the first update to return. This must be set to one higher
     /// than previous IDs in order to confirm previous updates and clear them.
@@ -438,7 +438,7 @@ impl TelegramRequest for GetUpdates {
 ///     ..Default::default()
 /// };
 /// ```
-#[derive(Serialize, Default, Debug)]
+#[derive(Serialize, Default, Debug, Clone)]
 pub struct SendMessage {
     /// The ID of the chat to send a message to.
     pub chat_id: ChatID,
@@ -474,7 +474,7 @@ impl TelegramRequest for SendMessage {
 ///
 /// Actions last for 5 seconds or until a message is sent,
 /// whichever comes first.
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct SendChatAction {
     /// The ID of the chat to send an action to.
     pub chat_id: ChatID,
@@ -491,7 +491,7 @@ impl TelegramRequest for SendChatAction {
 }
 
 /// SendPhoto sends a photo.
-#[derive(Serialize, Debug, Default)]
+#[derive(Serialize, Debug, Default, Clone)]
 pub struct SendPhoto {
     /// The ID of the chat to send a photo to.
     pub chat_id: ChatID,
@@ -526,7 +526,7 @@ impl TelegramRequest for SendPhoto {
     }
 }
 
-#[derive(Serialize, Debug, Default)]
+#[derive(Serialize, Debug, Default, Clone)]
 pub struct SendVideo {
     pub chat_id: ChatID,
     #[serde(skip_serializing_if = "FileType::needs_upload")]
@@ -575,7 +575,7 @@ impl TelegramRequest for SendVideo {
 /// This will not download the file! It only returns a [File] containing
 /// the path which is needed to download the file. This returned ID lasts at
 /// least one hour.
-#[derive(Serialize, Debug)]
+#[derive(Serialize, Debug, Clone)]
 pub struct GetFile {
     /// The ID of the file to fetch.
     pub file_id: String,
@@ -589,7 +589,7 @@ impl TelegramRequest for GetFile {
     }
 }
 
-#[derive(Debug, Serialize, Default)]
+#[derive(Debug, Serialize, Default, Clone)]
 pub struct SendMediaGroup {
     pub chat_id: ChatID,
     #[serde(serialize_with = "clean_input_media")]
@@ -635,7 +635,7 @@ impl TelegramRequest for SendMediaGroup {
 }
 
 /// Responds to an inline query request.
-#[derive(Debug, Serialize, Default)]
+#[derive(Debug, Serialize, Default, Clone)]
 pub struct AnswerInlineQuery {
     /// ID of the inline query.
     pub inline_query_id: String,
@@ -726,14 +726,14 @@ impl TelegramRequest for AnswerCallbackQuery {
     }
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 #[serde(untagged)]
 pub enum MessageOrBool {
     Message(Box<Message>),
     Bool(bool),
 }
 
-#[derive(Default, Debug, Serialize)]
+#[derive(Default, Debug, Serialize, Clone)]
 pub struct EditMessageText {
     pub chat_id: ChatID,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -757,7 +757,7 @@ impl TelegramRequest for EditMessageText {
     }
 }
 
-#[derive(Default, Debug, Serialize)]
+#[derive(Default, Debug, Serialize, Clone)]
 pub struct EditMessageCaption {
     pub chat_id: ChatID,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -780,7 +780,7 @@ impl TelegramRequest for EditMessageCaption {
     }
 }
 
-#[derive(Default, Debug, Serialize)]
+#[derive(Default, Debug, Serialize, Clone)]
 pub struct EditMessageReplyMarkup {
     pub chat_id: ChatID,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -799,7 +799,7 @@ impl TelegramRequest for EditMessageReplyMarkup {
     }
 }
 
-#[derive(Default, Debug, Serialize)]
+#[derive(Default, Debug, Serialize, Clone)]
 pub struct DeleteMessage {
     pub chat_id: ChatID,
     pub message_id: i32,

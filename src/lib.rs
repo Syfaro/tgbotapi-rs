@@ -2,7 +2,7 @@ pub use error::*;
 pub use files::*;
 pub use types::*;
 
-use tracing::{debug, warn};
+use tracing::{debug, error, trace};
 
 mod error;
 mod files;
@@ -75,7 +75,7 @@ impl Telegram {
 
     /// Make a request for a [TelegramRequest] item and parse the response
     /// into the requested output type if the request succeeded.
-    #[tracing::instrument(skip(self))]
+    #[tracing::instrument(skip(self, request), fields(method = request.endpoint()))]
     pub async fn make_request<T>(&self, request: &T) -> Result<T::Response, Error>
     where
         T: TelegramRequest,
@@ -85,7 +85,7 @@ impl Telegram {
         let url = format!("{}bot{}/{}", self.api_endpoint, self.api_key, endpoint);
         let values = request.values()?;
 
-        debug!(method = endpoint, "making request");
+        debug!("Making request with values: {:?}", values);
 
         let resp: types::Response<T::Response> = if let Some(files) = request.files() {
             // If our request has a file that needs to be uploaded, use
@@ -93,27 +93,30 @@ impl Telegram {
             // a string and putting it into a field with the same name as the
             // original object.
 
+            trace!("Request has files: {:?}", files);
+
             let mut form_values = serde_json::Map::new();
             form_values = values.as_object().unwrap_or(&form_values).clone();
 
-            let form =
-                form_values
-                    .iter()
-                    .fold(reqwest::multipart::Form::new(), |form, (name, value)| {
-                        if let Some(s) = value.as_str() {
-                            form.text(name.to_owned(), s.to_string())
-                        } else if let Ok(value) = serde_json::to_string(value) {
-                            form.text(name.to_owned(), value)
-                        } else {
-                            let field: &str = name;
-                            warn!(method = endpoint, field, data = ?value, "skipping field due to invalid data");
-                            form
-                        }
-                    });
+            let form = form_values.iter().fold(
+                reqwest::multipart::Form::new(),
+                |form, (name, value)| {
+                    if let Some(s) = value.as_str() {
+                        form.text(name.to_owned(), s.to_string())
+                    } else if let Ok(value) = serde_json::to_string(value) {
+                        form.text(name.to_owned(), value)
+                    } else {
+                        error!(field = %name, "Skipping field due to invalid value: {:?}", value);
+                        form
+                    }
+                },
+            );
 
             let form = files
                 .into_iter()
                 .fold(form, |form, (name, part)| form.part(name, part));
+
+            trace!("Built request form: {:?}", form);
 
             self.client
                 .post(&url)
@@ -126,6 +129,8 @@ impl Telegram {
             // No files to upload, use a JSON body in a POST request to the
             // requested endpoint.
 
+            trace!("Request has no files");
+
             self.client
                 .post(&url)
                 .json(&values)
@@ -135,7 +140,7 @@ impl Telegram {
                 .await?
         };
 
-        debug!(method = endpoint, ?resp, "got response");
+        debug!("Got response: {:?}", resp);
 
         resp.into()
     }

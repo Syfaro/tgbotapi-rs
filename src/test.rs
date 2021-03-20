@@ -7,6 +7,8 @@ static TOKEN: &str = "abc123";
 
 #[test]
 fn test_file_type() {
+    let _ = tracing_subscriber::fmt::try_init();
+
     let url = FileType::Url("test".into());
     assert_eq!(url.needs_upload(), false, "url does not need upload");
     assert!(url.file().is_none(), "url does not have file");
@@ -30,6 +32,8 @@ fn test_file_type() {
 
 #[test]
 fn test_input_media() {
+    let _ = tracing_subscriber::fmt::try_init();
+
     let photo = InputMedia::Photo(InputMediaPhoto {
         caption: Some("caption".into()),
         media: FileType::FileID("test1".into()),
@@ -69,7 +73,7 @@ fn test_input_media() {
 
 #[tokio::test]
 async fn test_download_file() {
-    let _ = pretty_env_logger::try_init();
+    let _ = tracing_subscriber::fmt::try_init();
 
     let file_id = "123";
     let body = "helloworld".to_string();
@@ -92,7 +96,7 @@ async fn test_download_file() {
 
 #[tokio::test]
 async fn test_webhook() {
-    let _ = pretty_env_logger::try_init();
+    let _ = tracing_subscriber::fmt::try_init();
 
     let endpoint = "http://example.com";
 
@@ -130,7 +134,7 @@ async fn test_webhook() {
 
 #[tokio::test]
 async fn test_get_me() {
-    let _ = pretty_env_logger::try_init();
+    let _ = tracing_subscriber::fmt::try_init();
 
     let user = User {
         id: 123,
@@ -168,7 +172,7 @@ async fn test_get_me() {
 
 #[tokio::test]
 async fn test_send_photo_url() {
-    let _ = pretty_env_logger::try_init();
+    let _ = tracing_subscriber::fmt::try_init();
 
     let server = Server::run();
     server.expect(
