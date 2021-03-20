@@ -527,6 +527,42 @@ impl TelegramRequest for SendPhoto {
 }
 
 #[derive(Serialize, Debug, Default, Clone)]
+pub struct SendDocument {
+    /// The ID of the chat to send a photo to.
+    pub chat_id: ChatID,
+    /// The file that makes up this photo.
+    #[serde(skip_serializing_if = "FileType::needs_upload")]
+    pub document: FileType,
+    /// A caption for the photo, if desired.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub caption: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parse_mode: Option<ParseMode>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_notification: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reply_to_message_id: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
+impl TelegramRequest for SendDocument {
+    type Response = Message;
+
+    fn endpoint(&self) -> &str {
+        "sendDocument"
+    }
+
+    fn files(&self) -> RequestFiles {
+        if self.document.needs_upload() {
+            Some(vec![("document".into(), self.document.file().unwrap())])
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Serialize, Debug, Default, Clone)]
 pub struct SendVideo {
     pub chat_id: ChatID,
     #[serde(skip_serializing_if = "FileType::needs_upload")]
@@ -559,11 +595,47 @@ impl TelegramRequest for SendVideo {
     }
 
     fn files(&self) -> RequestFiles {
-        // Check if the photo needs to be uploaded. If the photo does need to
-        // be uploaded, we specify the field name and get the file. This unwrap
-        // is safe because `needs_upload` only returns true when it exists.
         if self.video.needs_upload() {
             Some(vec![("video".into(), self.video.file().unwrap())])
+        } else {
+            None
+        }
+    }
+}
+
+#[derive(Serialize, Debug, Default, Clone)]
+pub struct SendAnimation {
+    pub chat_id: ChatID,
+    #[serde(skip_serializing_if = "FileType::needs_upload")]
+    pub animation: FileType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub duration: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub width: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub height: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub caption: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub parse_mode: Option<ParseMode>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub disable_notification: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reply_to_message_id: Option<i32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub reply_markup: Option<ReplyMarkup>,
+}
+
+impl TelegramRequest for SendAnimation {
+    type Response = Message;
+
+    fn endpoint(&self) -> &str {
+        "sendAnimation"
+    }
+
+    fn files(&self) -> RequestFiles {
+        if self.animation.needs_upload() {
+            Some(vec![("animation".into(), self.animation.file().unwrap())])
         } else {
             None
         }
