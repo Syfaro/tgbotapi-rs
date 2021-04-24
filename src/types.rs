@@ -168,6 +168,8 @@ pub struct Message {
     pub forward_date: Option<i64>,
     /// The message this message is in reply to. Can only be one level deep.
     pub reply_to_message: Option<Box<Message>>,
+    /// Bot through which the message was sent.
+    pub via_bot: Option<User>,
     /// Date this message was last edited, as a unix timestamp.
     pub edit_date: Option<i64>,
     /// Unique identifier of the media group the message belongs to.
