@@ -456,6 +456,9 @@ pub struct SendMessage {
     /// The ID of the [Message] this Message is in reply to.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message_id: Option<i32>,
+    /// Allow sending the message even if the reply message was not found.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allow_sending_without_reply: Option<bool>,
     /// The [ReplyMarkup], if desired.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<ReplyMarkup>,
@@ -503,6 +506,9 @@ pub struct SendPhoto {
     pub caption: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message_id: Option<i32>,
+    /// Allow sending the message even if the reply message was not found.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub allow_sending_without_reply: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_markup: Option<ReplyMarkup>,
 }
