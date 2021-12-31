@@ -140,6 +140,7 @@ pub enum MessageEntityType {
     Italic,
     Underline,
     Strikethrough,
+    Spoiler,
     Code,
     Pre,
     TextLink,
