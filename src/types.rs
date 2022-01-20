@@ -362,11 +362,24 @@ pub struct InlineKeyboardButton {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub url: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub login_url: Option<LoginUrl>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub callback_data: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub switch_inline_query: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub switch_inline_query_current_chat: Option<String>,
+}
+
+#[derive(Serialize, Deserialize, Debug, Default, Clone)]
+pub struct LoginUrl {
+    pub url: String,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub forward_text: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub bot_username: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub request_write_access: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
