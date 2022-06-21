@@ -930,3 +930,38 @@ impl TelegramRequest for GetChatMember {
         "getChatMember"
     }
 }
+
+#[derive(Default, Debug, Serialize, Clone)]
+pub struct ChatAdministratorRights {
+    pub is_anonymous: bool,
+}
+
+#[derive(Default, Debug, Serialize, Clone)]
+pub struct SetMyDefaultAdministratorRights {
+    #[serde(flatten)]
+    pub rights: ChatAdministratorRights,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub for_channels: Option<bool>,
+}
+
+impl TelegramRequest for SetMyDefaultAdministratorRights {
+    type Response = bool;
+
+    fn endpoint(&self) -> &str {
+        "setMyDefaultAdministratorRights"
+    }
+}
+
+#[derive(Default, Debug, Serialize, Clone)]
+pub struct GetMyDefaultAdministratorRights {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub for_channels: Option<bool>,
+}
+
+impl TelegramRequest for GetMyDefaultAdministratorRights {
+    type Response = bool;
+
+    fn endpoint(&self) -> &str {
+        "getMyDefaultAdministratorRights"
+    }
+}
