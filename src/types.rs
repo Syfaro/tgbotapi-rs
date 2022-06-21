@@ -305,7 +305,7 @@ pub struct PhotoSize {
     pub file_unique_id: String,
     pub width: i32,
     pub height: i32,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 /// A callback query is data from an inline keyboard.
@@ -350,7 +350,7 @@ pub struct File {
     /// The ID for this file, specific to this bot.
     pub file_id: String,
     /// The size of the file, if known.
-    pub file_size: Option<usize>,
+    pub file_size: Option<i64>,
     /// A path which is required to download the file. It is unclear
     /// when this would ever be `None`.
     pub file_path: Option<String>,
@@ -505,7 +505,7 @@ pub struct Sticker {
     /// For mask stickers, where the mask should be placed.
     pub mask_position: Option<MaskPosition>,
     /// File size of the sticker.
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -516,7 +516,7 @@ pub struct Audio {
     pub performer: Option<String>,
     pub title: Option<String>,
     pub mime_type: Option<String>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
     pub thumb: Option<PhotoSize>,
 }
 
@@ -527,7 +527,7 @@ pub struct Document {
     pub thumb: Option<PhotoSize>,
     pub file_name: Option<String>,
     pub mime_type: Option<String>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -540,7 +540,7 @@ pub struct Animation {
     pub thumb: Option<PhotoSize>,
     pub file_name: Option<String>,
     pub mime_type: Option<String>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -562,7 +562,7 @@ pub struct Video {
     pub duration: i32,
     pub thumb: Option<PhotoSize>,
     pub mime_type: Option<String>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -571,7 +571,7 @@ pub struct Voice {
     pub file_unique_id: String,
     pub duration: i32,
     pub mime_type: Option<String>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
@@ -581,7 +581,7 @@ pub struct VideoNote {
     pub length: i32,
     pub duration: i32,
     pub thumb: Option<PhotoSize>,
-    pub file_size: Option<i32>,
+    pub file_size: Option<i64>,
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
