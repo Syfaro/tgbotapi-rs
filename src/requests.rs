@@ -751,6 +751,8 @@ pub struct SetWebhook {
     pub url: String,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub allowed_updates: Option<Vec<String>>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub secret_token: Option<String>,
 }
 
 impl TelegramRequest for SetWebhook {
