@@ -122,6 +122,8 @@ pub struct MessageEntity {
     pub length: i32,
     pub url: Option<String>,
     pub user: Option<User>,
+    pub language: Option<String>,
+    pub custom_emoji_id: Option<String>,
 }
 
 /// The type of an entity within a message's text or caption.
@@ -145,6 +147,7 @@ pub enum MessageEntityType {
     Pre,
     TextLink,
     TextMention,
+    CustomEmoji,
 }
 
 /// A sent message.
