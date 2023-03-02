@@ -34,7 +34,7 @@ pub trait TelegramRequest: serde::Serialize + std::fmt::Debug {
     /// A JSON-compatible serialization of the data to send with the request.
     /// The default works for most methods.
     fn values(&self) -> Result<serde_json::Value, serde_json::Error> {
-        serde_json::to_value(&self)
+        serde_json::to_value(self)
     }
 
     /// Files that are sent with the request.
