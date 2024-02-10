@@ -59,19 +59,14 @@ pub struct User {
     pub language_code: Option<String>,
 }
 
-#[derive(Clone, Debug, Deserialize, PartialEq, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, PartialEq, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum ChatType {
+    #[default]
     Private,
     Group,
     Supergroup,
     Channel,
-}
-
-impl Default for ChatType {
-    fn default() -> Self {
-        ChatType::Private
-    }
 }
 
 impl ChatType {
@@ -461,18 +456,13 @@ pub struct ChatMemberUpdated {
 
 /// The part of the face where the mask should be placed as a part of a mask
 /// position in a sticker.
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 pub enum MaskPositionPoint {
+    #[default]
     Forehead,
     Eyes,
     Mouth,
     Chin,
-}
-
-impl Default for MaskPositionPoint {
-    fn default() -> Self {
-        MaskPositionPoint::Forehead
-    }
 }
 
 /// The position on faces where a mask should be placed.
@@ -628,17 +618,12 @@ pub struct Poll {
     pub correct_option_id: Option<i32>,
 }
 
-#[derive(Clone, Debug, Deserialize, Serialize)]
+#[derive(Clone, Default, Debug, Deserialize, Serialize)]
 #[serde(rename_all = "lowercase")]
 pub enum PollType {
+    #[default]
     Regular,
     Quiz,
-}
-
-impl Default for PollType {
-    fn default() -> Self {
-        PollType::Regular
-    }
 }
 
 #[derive(Clone, Debug, Default, Deserialize, Serialize)]
