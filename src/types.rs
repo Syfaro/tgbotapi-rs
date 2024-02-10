@@ -143,6 +143,7 @@ pub enum MessageEntityType {
     Underline,
     Strikethrough,
     Spoiler,
+    Blockquote,
     Code,
     Pre,
     TextLink,
@@ -212,6 +213,8 @@ pub struct Message {
     /// The caption, may be set if this message contained an animation, audio,
     /// document, photo, video, or voice. Up to 1024 characters.
     pub caption: Option<String>,
+    /// If the message media is covered by a spoiler animation.
+    pub has_media_spoiler: Option<bool>,
     /// If the message was a contact, the contact information.
     pub contact: Option<Contact>,
     /// If the message was a location, the location information.

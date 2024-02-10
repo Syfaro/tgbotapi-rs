@@ -130,6 +130,9 @@ pub struct InputMediaPhoto {
     /// Parse mode for the caption.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parse_mode: Option<ParseMode>,
+    /// If the photo should be covered with a spoiler animation.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_spoiler: Option<bool>,
 }
 
 impl Default for InputMediaPhoto {
@@ -139,6 +142,7 @@ impl Default for InputMediaPhoto {
             media: Default::default(),
             caption: None,
             parse_mode: None,
+            has_spoiler: None,
         }
     }
 }
@@ -174,6 +178,9 @@ pub struct InputMediaVideo {
     /// If the video is suitable for streaming.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub supports_streaming: Option<bool>,
+    /// If the video should be covered with a spoiler animation.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_spoiler: Option<bool>,
 }
 
 impl Default for InputMediaVideo {
@@ -188,6 +195,7 @@ impl Default for InputMediaVideo {
             height: None,
             duration: None,
             supports_streaming: None,
+            has_spoiler: None,
         }
     }
 }
@@ -504,6 +512,9 @@ pub struct SendPhoto {
     /// A caption for the photo, if desired.
     #[serde(skip_serializing_if = "Option::is_none")]
     pub caption: Option<String>,
+    /// If the photo should be covered with a spoiler animation.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_spoiler: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub reply_to_message_id: Option<i32>,
     /// Allow sending the message even if the reply message was not found.
@@ -584,6 +595,8 @@ pub struct SendVideo {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parse_mode: Option<ParseMode>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_spoiler: Option<bool>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub supports_streaming: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
@@ -624,6 +637,8 @@ pub struct SendAnimation {
     pub caption: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub parse_mode: Option<ParseMode>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub has_spoiler: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub disable_notification: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
