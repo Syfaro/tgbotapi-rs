@@ -638,3 +638,9 @@ pub struct PollAnswer {
     pub user: User,
     pub option_ids: Vec<i32>,
 }
+
+#[derive(Clone, Debug, Default, Deserialize, Serialize)]
+pub struct BotCommand {
+    pub command: String,
+    pub description: String,
+}

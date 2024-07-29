@@ -986,3 +986,126 @@ impl TelegramRequest for GetMyDefaultAdministratorRights {
         "getMyDefaultAdministratorRights"
     }
 }
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct SetMyCommands {
+    pub commands: Vec<BotCommand>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+    pub language_code: Option<String>,
+}
+
+impl Default for SetMyCommands {
+    fn default() -> Self {
+        SetMyCommands {
+            commands: vec![
+                BotCommand {
+                    command: "start".to_string(), 
+                    description: "Restart bot".to_string()
+                },
+                BotCommand {
+                    command: "help".to_string(), 
+                    description: "About bot".to_string()
+                },
+            ],
+            scope: Some(BotCommandScope { 
+                type_: BotCommnandScopeType::Default, chat_id: None, user_id: None 
+            }),
+            language_code: Some("".to_string())
+        }
+    }
+}
+
+impl TelegramRequest for SetMyCommands {
+    type Response = bool;
+
+    fn endpoint(&self) -> &str {
+        "setMyCommands"
+    }
+}
+
+
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct DeleteMyCommands {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+    pub language_code: Option<String>,
+}
+
+impl Default for DeleteMyCommands {
+    fn default() -> Self {
+        DeleteMyCommands {
+            scope: Some(BotCommandScope { 
+                type_: BotCommnandScopeType::Default, 
+                chat_id: None, user_id: None 
+            }),
+            language_code: Some("".to_string())
+        }
+    }
+}
+
+impl TelegramRequest for DeleteMyCommands {
+    type Response = bool;
+
+    fn endpoint(&self) -> &str {
+        "deleteMyCommands"
+    }
+}
+
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct GetMyCommands {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub scope: Option<BotCommandScope>,
+    pub language_code: Option<String>,
+}
+
+impl Default for GetMyCommands {
+    fn default() -> Self {
+        GetMyCommands {
+            scope: Some(BotCommandScope { 
+                type_: BotCommnandScopeType::Default, 
+                chat_id: None, 
+                user_id: None 
+            }),
+            language_code: Some("".to_string())
+        }
+    }
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct BotCommandScope {
+    #[serde(rename = "type")]
+    pub type_: BotCommnandScopeType,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub chat_id: Option<i64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub user_id: Option<i64>,
+}
+
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub enum BotCommnandScopeType {
+    #[serde(rename = "default")]
+    Default,
+    #[serde(rename = "all_private_chats")]
+    AllPrivateChats,
+    #[serde(rename = "all_group_chats")]
+    AllGroupChats,
+    #[serde(rename = "all_chat_administrators")]
+    AllChatAdministrators,
+    #[serde(rename = "chat")]
+    Chat,
+    #[serde(rename = "chat_administrators")]
+    ChatAdministrators,
+    #[serde(rename = "chat_member")]
+    ChatMember,
+}
+
+impl TelegramRequest for GetMyCommands {
+    type Response = Vec<BotCommand>;
+
+    fn endpoint(&self) -> &str {
+        "getMyCommands"
+    }
+}
