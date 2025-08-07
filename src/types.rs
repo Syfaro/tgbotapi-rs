@@ -123,6 +123,7 @@ pub struct MessageEntity {
 
 /// The type of an entity within a message's text or caption.
 #[derive(Clone, Debug, PartialEq, Deserialize, Serialize)]
+#[non_exhaustive]
 #[serde(rename_all = "snake_case")]
 pub enum MessageEntityType {
     Mention,
@@ -144,6 +145,9 @@ pub enum MessageEntityType {
     TextLink,
     TextMention,
     CustomEmoji,
+    ExpandableBlockquote,
+    #[serde(other)]
+    Other,
 }
 
 /// A sent message.
